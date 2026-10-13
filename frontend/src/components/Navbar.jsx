@@ -282,29 +282,96 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Pill CTA Button matching screenshot */}
+            {/* Pill CTA Button (Desktop Only - hidden on mobile viewports per user request) */}
             <button 
-              className="skinive-pill-cta-btn"
+              className="skinive-pill-cta-btn desktop-only"
               onClick={onOpenScanner}
             >
               <span>START FREE SCAN</span>
             </button>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Hamburger Menu Toggle Button */}
             <button 
               className="skinive-pill-mobile-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </header>
+
+        {/* Mobile Backdrop Overlay */}
+        {mobileMenuOpen && (
+          <div 
+            className="skinive-mobile-backdrop" 
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
 
         {/* Mobile Drawer */}
         {mobileMenuOpen && (
           <div className="skinive-pill-mobile-drawer">
             <div className="mobile-drawer-content">
+              {/* User profile card or sign-in / sign-up buttons */}
+              {user ? (
+                <>
+                  <div className="mobile-user-profile-card">
+                    <div className="mobile-user-avatar">
+                      <span>{user.name ? user.name.charAt(0).toUpperCase() : 'U'}</span>
+                    </div>
+                    <div className="mobile-user-meta" style={{ flex: 1, minWidth: 0 }}>
+                      <span className="mobile-user-name" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.name}</span>
+                      <span className="mobile-user-email" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.email || 'patient@derma-ai.org'}</span>
+                    </div>
+                    <button 
+                      className="mobile-user-logout" 
+                      onClick={() => { setMobileMenuOpen(false); onLogout(); }}
+                      title="Sign Out"
+                    >
+                      <LogOut size={16} />
+                    </button>
+                  </div>
+
+                  <button
+                    className="mobile-pill-drawer-portal-jump"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      if (user.role === 'doctor') {
+                        if (onOpenDoctorPortal) onOpenDoctorPortal();
+                        else setCurrentView('doctor');
+                      } else {
+                        if (onOpenProfile) onOpenProfile();
+                        else setCurrentView('patient');
+                      }
+                    }}
+                  >
+                    <Sparkles size={16} color="#0055FF" />
+                    <span>Go to {user.role === 'doctor' ? 'Clinician Workstation' : 'Patient Health Portal'}</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </>
+              ) : (
+                <div style={{ display: 'flex', gap: '0.65rem', marginBottom: '0.65rem' }}>
+                  <button
+                    className="mobile-pill-drawer-signin-btn"
+                    onClick={() => { setMobileMenuOpen(false); onOpenAuth('signin', 'patient'); }}
+                    style={{ flex: 1 }}
+                  >
+                    <User size={15} />
+                    <span>Sign In</span>
+                  </button>
+                  <button
+                    className="mobile-pill-drawer-signup-btn"
+                    onClick={() => { setMobileMenuOpen(false); onOpenAuth('signup', 'patient'); }}
+                    style={{ flex: 1 }}
+                  >
+                    <span>Sign Up</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Navigation links */}
               {navLinks.map((link) => (
                 <button
                   key={link.label}
@@ -315,25 +382,10 @@ export default function Navbar({
                   <ArrowRight size={15} />
                 </button>
               ))}
-              {user && (
-                <div className="mobile-user-profile-card">
-                  <div className="mobile-user-avatar">
-                    <span>{user.name ? user.name.charAt(0).toUpperCase() : 'U'}</span>
-                  </div>
-                  <div className="mobile-user-meta">
-                    <span className="mobile-user-name">{user.name}</span>
-                    <span className="mobile-user-email">{user.email || 'patient@derma-ai.org'}</span>
-                  </div>
-                  <button 
-                    className="mobile-user-logout" 
-                    onClick={() => { setMobileMenuOpen(false); onLogout(); }}
-                    title="Sign Out"
-                  >
-                    <LogOut size={16} />
-                  </button>
-                </div>
-              )}
+
               <div className="mobile-drawer-sep"></div>
+
+              {/* Mobile Start Free Scan button */}
               <button 
                 className="skinive-pill-cta-btn full-width"
                 onClick={() => { setMobileMenuOpen(false); onOpenScanner(); }}
