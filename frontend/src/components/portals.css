@@ -20,9 +20,12 @@
   top: 1.25rem;
   z-index: 600;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 0 1rem;
   margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .portal-pill-navbar {
@@ -40,6 +43,8 @@
   max-width: 1320px;
   width: 100%;
   transition: all 0.25s ease;
+  position: relative;
+  z-index: 999995;
 }
 
 .portal-brand-pill {
@@ -1177,12 +1182,7 @@
   }
 
   .portal-back-home-btn {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.75rem;
-  }
-
-  .portal-back-home-btn span {
-    display: none;
+    display: none !important;
   }
 
   /* Main Container Responsive */
