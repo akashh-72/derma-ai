@@ -5381,9 +5381,11 @@
   z-index: 1000;
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   pointer-events: none;
   padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .skinive-pill-navbar {
@@ -5401,6 +5403,9 @@
   justify-content: space-between;
   box-shadow: 0 8px 32px -4px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
   transition: all 0.22s ease;
+  position: relative;
+  z-index: 1002;
+  box-sizing: border-box;
 }
 
 .skinive-pill-brand {
@@ -5890,16 +5895,84 @@
   padding: 0.35rem;
 }
 
+.skinive-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 999;
+  pointer-events: auto;
+  animation: portalFadeIn 0.2s ease;
+}
+
 .skinive-pill-mobile-drawer {
   pointer-events: auto;
   width: 100%;
   max-width: 1240px;
   background: #FFFFFF;
-  border-radius: 28px;
-  padding: 1.5rem;
+  border-radius: 24px;
+  padding: 1.15rem;
   margin-top: 0.65rem;
-  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.14);
-  border: 1px solid #EAEFF5;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  border: 1px solid #E2E8F0;
+  box-sizing: border-box;
+  z-index: 1001;
+  animation: portalSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 82vh;
+  overflow-y: auto;
+}
+
+.mobile-pill-drawer-signin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #0055FF;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.mobile-pill-drawer-signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0055FF;
+  border: 1px solid #0055FF;
+  color: #FFFFFF;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.mobile-pill-drawer-portal-jump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  color: #166534;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition: all 0.18s ease;
 }
 
 .mobile-drawer-content {
@@ -5911,16 +5984,22 @@
 .mobile-pill-drawer-item {
   background: #F8FAFC;
   border: 1px solid #EAEFF5;
-  border-radius: 16px;
-  padding: 0.85rem 1.2rem;
+  border-radius: 14px;
+  padding: 0.8rem 1.1rem;
   font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #0055FF;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.mobile-pill-drawer-item:hover {
+  background: #EFF6FF;
+  border-color: #BFDBFE;
 }
 
 .mobile-drawer-sep {
@@ -8075,11 +8154,21 @@
 
 @media (max-width: 1080px) {
   .skinive-pill-links,
-  .skinive-pill-signin-btn {
-    display: none;
+  .skinive-pill-signin-btn,
+  .skinive-pill-actions > .skinive-pill-cta-btn,
+  .skinive-pill-cta-btn.desktop-only {
+    display: none !important;
   }
   .skinive-pill-mobile-btn {
-    display: block;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    color: #1E293B;
   }
   .features-layout-grid {
     grid-template-columns: 1fr;
@@ -8106,14 +8195,60 @@
 }
 
 @media (max-width: 768px) {
+  .floating-nav-outer-container {
+    padding: 0.5rem 0.75rem;
+    top: 0.5rem;
+  }
+  .skinive-pill-navbar {
+    padding: 0.45rem 0.85rem;
+    border-radius: 20px;
+  }
   .skinive-hero-title {
-    font-size: 2.8rem;
+    font-size: clamp(2rem, 8vw, 2.7rem) !important;
+    line-height: 1.12 !important;
+    margin-bottom: 1rem !important;
+  }
+  .skinive-hero-subtitle {
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 1.8rem !important;
+  }
+  .skinive-hero-cta-row {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    margin-bottom: 2.2rem !important;
+  }
+  .skinive-hero-cta-row button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .skinive-hero-stats-cards {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  .skinive-stat-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .skinive-hero-container {
+    padding: 0 1rem !important;
+    gap: 2.5rem !important;
+  }
+  .hero-stage-card-wrapper {
+    max-width: 100% !important;
+  }
+  .hero-showcase-frame {
+    height: auto !important;
+    min-height: 280px !important;
+    border-radius: 22px !important;
   }
   .skinive-section-title {
-    font-size: 2.3rem;
+    font-size: 1.95rem !important;
   }
   .stats-card-heading {
-    font-size: 2rem;
+    font-size: 1.8rem !important;
   }
   .stats-metrics-strip {
     grid-template-columns: 1fr;
@@ -8126,7 +8261,43 @@
     display: none;
   }
   .contact-modal-card {
-    padding: 1.8rem;
+    padding: 1.5rem !important;
+    border-radius: 24px !important;
+  }
+  .pro-user-capsule .user-capsule-info {
+    display: none !important;
+  }
+  .pro-user-capsule {
+    padding: 0.25rem 0.45rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-nav-outer-container {
+    padding: 0.35rem 0.5rem;
+    top: 0.35rem;
+  }
+  .skinive-pill-navbar {
+    padding: 0.38rem 0.65rem;
+    border-radius: 18px;
+  }
+  .skinive-pill-brand-text {
+    font-size: 1.05rem !important;
+  }
+  .skinive-circle-logo {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .skinive-pill-mobile-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+  }
+  .skinive-pill-mobile-drawer {
+    border-radius: 20px;
+    padding: 1rem;
   }
 }
 
